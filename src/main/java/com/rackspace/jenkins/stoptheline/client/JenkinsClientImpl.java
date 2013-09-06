@@ -34,7 +34,7 @@ public class JenkinsClientImpl implements JenkinsClient{
 
         Map<String, Job> jobs = new HashMap<String, Job>();
         try {
-            jobs =  jenkins.getJobs();
+            jobs.putAll(jenkins.getJobs());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 
