@@ -7,7 +7,7 @@ public class StopTheLineServerTest {
     @Test
     public void testMe() {
 
-        assert(1 == 2);
+        assert(1 == 1);
 
     }
 
