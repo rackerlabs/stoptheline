@@ -21,7 +21,6 @@ public class JenkinsClientImpl implements JenkinsClient{
     public JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
 
         this.jenkinsURI=jenkinsURI;
-        JenkinsServer jenkins=null;
 
         if(jenkinsURI!=null && !jenkinsURI.isEmpty()){
             jenkins = new JenkinsServer(new URI(jenkinsURI));
@@ -34,7 +33,7 @@ public class JenkinsClientImpl implements JenkinsClient{
 
         Map<String, Job> jobs = new HashMap<String, Job>();
         try {
-            jobs =  jenkins.getJobs();
+            jobs.putAll(jenkins.getJobs());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 
