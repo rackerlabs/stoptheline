@@ -6,10 +6,14 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import java.util.Properties;
+
 /**
  * Embedded Jetty Server
  */
 public class StopTheLineServer {
+
+    static final String propertyFilename = "stl.properties";
 
     public static void main(String[] args) throws Exception {
 
@@ -23,13 +27,10 @@ public class StopTheLineServer {
         Server server = new Server(port);
 
         WebAppContext context = new WebAppContext();
-
         context.setContextPath("/");
-
         server.setHandler(context);
-
         server.start();
-
         server.join();
     }
+
 }
