@@ -17,7 +17,7 @@ public class JenkinsClientImpl implements JenkinsClient{
     public static String  jenkinsURI;
     public static Map<String, Job> jobs;
 
-    public void JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
+    public JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
 
         this.jenkinsURI=jenkinsURI;
         JenkinsServer jenkins=null;
