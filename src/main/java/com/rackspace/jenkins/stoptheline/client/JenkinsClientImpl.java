@@ -7,6 +7,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Map;
 public class JenkinsClientImpl implements JenkinsClient{
 
     public static String  jenkinsURI;
-    public static Map<String, Job> jobs;
+    private JenkinsServer jenkins;
 
     public JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
 
@@ -26,20 +27,25 @@ public class JenkinsClientImpl implements JenkinsClient{
             jenkins = new JenkinsServer(new URI(jenkinsURI));
         }
 
-        if(jenkins!=null)  {
-            jobs= jenkins.getJobs();
-        }
-
     }
 
 
     public Map<String, Job> getAllJobs(){
+
+        Map<String, Job> jobs = new HashMap<String, Job>();
+        try {
+            jobs =  jenkins.getJobs();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+        }
+
         return jobs;
     }
 
     public JobWithDetails getJobDetails(String jobName) throws IOException {
         if(jobName!=null && !jobName.isEmpty())  {
-            return jobs.get(jobName).details();
+            return jenkins.getJob(jobName).details();
         }else{
             return null;
         }
@@ -63,7 +69,6 @@ public class JenkinsClientImpl implements JenkinsClient{
              if(!isJobSuccessful(getJobDetails(job.getKey()))){
                 return false;
              }
-
         }
 
         return true;
