@@ -2,6 +2,7 @@ package com.rackspace.jenkins.stoptheline;
 
 import com.rackspace.jenkins.stoptheline.servlet.StopTheLineServlet;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -29,10 +30,8 @@ public class StopTheLineServer {
 
         Server server = new Server(port);
 
-        WebAppContext context = new WebAppContext();
-        context.setContextPath("/");
-
-        context.addServlet(new ServletHolder(new StopTheLineServlet()), "/");
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.addServlet(new ServletHolder(new StopTheLineServlet()), "/*");
 
         server.setHandler(context);
         server.start();
