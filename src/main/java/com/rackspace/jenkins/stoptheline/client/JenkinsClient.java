@@ -20,4 +20,6 @@ public interface JenkinsClient {
 
     public boolean isAllJobsSuccessful(Map<String, Job> jobs)  throws IOException ;
 
+    public String getCulpritName(String path);
+
     }
