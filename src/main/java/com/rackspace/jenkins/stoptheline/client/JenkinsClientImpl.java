@@ -1,14 +1,20 @@
 package com.rackspace.jenkins.stoptheline.client;
 
+import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.JenkinsServer;
+import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +23,7 @@ public class JenkinsClientImpl implements JenkinsClient{
 
     public static String  jenkinsURI;
     private JenkinsServer jenkins;
+    private JenkinsHttpClient client ;
 
     public JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
 
@@ -24,7 +31,8 @@ public class JenkinsClientImpl implements JenkinsClient{
         jenkins=null;
 
         if(jenkinsURI!=null && !jenkinsURI.isEmpty()){
-            jenkins = new JenkinsServer(new URI(jenkinsURI));
+            client = new JenkinsHttpClient(new URI(jenkinsURI));
+            jenkins = new JenkinsServer(client);
         }
 
     }
@@ -74,6 +82,30 @@ public class JenkinsClientImpl implements JenkinsClient{
         return true;
     }
 
+    public String getCulpritName(String path)   {
+
+       try{
+
+        if(path!=null && !path.isEmpty())  {
+            String jsonText = client.get(path+"/api/json?tree=culprits[fullName]");
+            JSONObject json = new JSONObject(jsonText);
+            JSONArray culprits = json.getJSONArray("culprits");
+            if (culprits!=null && culprits.length()>0)  {
+                return culprits.getJSONObject(0).getString("fullName") ;
+            }
+
+        }
+
+       }catch(JSONException e){
+           e.printStackTrace();
+       } catch(HttpResponseException e){
+           e.printStackTrace();
+       } catch(IOException e) {
+           e.printStackTrace();
+
+       }
+        return null;
+    }
 
 
 }

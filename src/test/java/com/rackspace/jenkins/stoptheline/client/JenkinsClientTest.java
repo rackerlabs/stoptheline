@@ -17,5 +17,9 @@ public class JenkinsClientTest {
 
         Map<String, Job> jobs = client.getAllJobs();
 
+        String url=client.getJobDetails("repose-v2.0").getLastBuild().getUrl();
+
+        String culpritName=client.getCulpritName(url);
+
     }
 }
