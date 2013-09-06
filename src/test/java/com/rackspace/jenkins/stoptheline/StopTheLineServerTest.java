@@ -2,12 +2,12 @@ package com.rackspace.jenkins.stoptheline;
 
 import org.junit.Test;
 
-class StopTheLineServerTest {
+public class StopTheLineServerTest {
 
     @Test
-    void testMe() {
+    public void testMe() {
 
-        assert(1 == 2);
+        assert(1 == 1);
 
     }
 
