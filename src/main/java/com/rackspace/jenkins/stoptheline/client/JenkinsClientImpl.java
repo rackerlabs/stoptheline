@@ -21,7 +21,7 @@ public class JenkinsClientImpl implements JenkinsClient{
     public JenkinsClientImpl(String jenkinsURI) throws URISyntaxException,IOException{
 
         this.jenkinsURI=jenkinsURI;
-        JenkinsServer jenkins=null;
+        jenkins=null;
 
         if(jenkinsURI!=null && !jenkinsURI.isEmpty()){
             jenkins = new JenkinsServer(new URI(jenkinsURI));

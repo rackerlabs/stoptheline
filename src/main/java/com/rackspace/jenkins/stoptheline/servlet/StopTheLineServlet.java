@@ -33,7 +33,6 @@ public class StopTheLineServlet extends HttpServlet {
         resp.setStatus(200);
         if(isBroken()){
             resp.getOutputStream().write(new String("Bad!" + goodUrl).getBytes());
-            resp.sendRedirect(badUrl);
         } else{
             resp.getOutputStream().write(new String("Good!" + goodUrl).getBytes());
         }
