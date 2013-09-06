@@ -53,7 +53,7 @@ public class StopTheLineServer {
 
     private static StopTheLineServlet genStopTheLineServlet(Properties properties) throws IOException, URISyntaxException {
 
-        return new StopTheLineServlet(properties.getProperty("stl.jenkinsUrl"),
+        return new StopTheLineServlet(properties.getProperty("jenkinsURL"),
                 properties.getProperty("goodBuildURL"),
                 properties.getProperty("badBuildURL"),
                 getBuildsToMonitor(properties.getProperty("buildsToMonitor")));

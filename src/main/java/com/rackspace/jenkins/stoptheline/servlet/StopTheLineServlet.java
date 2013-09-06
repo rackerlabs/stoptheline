@@ -4,11 +4,15 @@ import com.offbytwo.jenkins.model.Job;
 import com.rackspace.jenkins.stoptheline.client.JenkinsClient;
 import com.rackspace.jenkins.stoptheline.client.JenkinsClientImpl;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,25 +35,38 @@ public class StopTheLineServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setStatus(200);
+
+        ServletOutputStream stream = resp.getOutputStream();
+        InputStream str;
+
         if(isBroken()){
-            resp.getOutputStream().write(new String("Bad!" + goodUrl).getBytes());
+            str =StopTheLineServlet.class.getResourceAsStream("bad.html");
+
         } else{
-            resp.getOutputStream().write(new String("Good!" + goodUrl).getBytes());
+            str = StopTheLineServlet.class.getResourceAsStream("good.html");
         }
+
+        resp.setHeader("Content-length", Integer.toString(str.available()));
+        byte[] payload = new byte[str.available()];
+        str.read(payload);
+
+        stream.write(payload);
+
 
     }
 
     private boolean isBroken() throws IOException {
 
         Map<String, Job> jobs = client.getAllJobs();
+        Map<String, Job> checkedJobs = new HashMap<String, Job>();
 
         for(String st: builds){
-            if(!jobs.containsKey(st)){
-                jobs.remove(st);
+            if(jobs.containsKey(st)){
+                checkedJobs.put(st,jobs.get(st));
             }
         }
 
-        return client.isAllJobsSuccessful(jobs);
+        return client.isAllJobsSuccessful(checkedJobs);
     }
 
 }
